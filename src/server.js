@@ -1,6 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const notes = require('./api/notes');
 const NotesService = require('./services/inMemory/notesService');
+const NotesValidator = require('./validation/notes');
 
 /* launch server on chrome using chrome.exe  --disable-site-isolation-trials
 --disable-web-security --user-data-dir="PATH_TO_PROJECT_DIRECTORY" */
@@ -22,6 +23,7 @@ const init = async () => {
     plugin: notes,
     options: {
       service: notesService,
+      validator: NotesValidator,
     },
   });
 
