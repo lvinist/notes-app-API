@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 
@@ -24,6 +25,11 @@ const AuthenticationsValidator = require('./validation/authentications');
 const collaborations = require('./api/collaborations');
 const CollaborationsService = require('./services/postgres/collaborationsService');
 const CollaborationValidator = require('./validation/collaborations');
+
+// exports
+const _exports = require('./api/exports');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validation/export');
 
 /* launch server on chrome using chrome.exe  --disable-site-isolation-trials
 --disable-web-security --user-data-dir="PATH_TO_PROJECT_DIRECTORY" */
@@ -96,6 +102,13 @@ const init = async () => {
         collaborationsService,
         notesService,
         validator: CollaborationValidator,
+      },
+    },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        validator: ExportsValidator,
       },
     },
   ]);
